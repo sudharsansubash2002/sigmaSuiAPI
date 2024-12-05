@@ -1,0 +1,17 @@
+{
+  "name": "sigmaapi",
+  "version": "1.0.0",
+  "description": "Sui API to mint NFT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mysten/sui": "^1.13.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.1",
+    "serverless-http": "^3.2.0"
+  }
+}
