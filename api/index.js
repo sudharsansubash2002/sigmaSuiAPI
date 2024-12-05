@@ -3,7 +3,6 @@ const {Ed25519Keypair} = require('@mysten/sui/keypairs/ed25519');
 const {Transaction} = require('@mysten/sui/transactions');
 const { SuiClient, getFullnodeUrl } = require('@mysten/sui/client');
 const { bcs } = require('@mysten/sui/bcs');
-const serverless = require("serverless-http");
 
 require('dotenv').config();
 
@@ -84,4 +83,4 @@ app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 
-module.exports = serverless(app);
+module.exports = app;
