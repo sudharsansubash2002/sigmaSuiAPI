@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware to parse JSON requests
 app.use(express.json());
-
+ 
 const PORT = 42101;
 // Example of accessing private key and RPC URL
 const privateKey = process.env.PRIVATE_KEY;
