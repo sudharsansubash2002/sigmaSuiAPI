@@ -33,18 +33,23 @@ const secretKeyGenerator = (private_key) => {
         try {
             // Extract tokenURI from the request or use a default value
             // const tokenURI = req.query.tokenURI ?? "https://example.com/metadata.json";
-            const tokenURI = req.body.tokenURI ?? "https://example.com/metadata.json";
+            const tokenURI = req.body.docChecksum ? `https://ipfs.io/ipfs/${req.body.docChecksum}` : `https://ipfs.io/ipfs/cidId`;
+            const input = req.body;
             
             // Create a new transaction
             const tx = new Transaction();
+
+            const inputVectors = input.map(str => bcs.String.serialize(str).toBytes());
     
             // Add the move call to the transaction
             tx.moveCall({
-                target: '0xb0a4b4b75c0697960bb462d57ef13aeca9439517d0ad5731d17666f0e219aa0b::sigmanft::mint_to_sender',
+                target: '0x7c0c5a50ac39cdb993bce4d7876e6db97593b9d617a9a778f8c8bb3bf974d40b::sigmanft::mint_to_sender',
                 arguments: [
-                    tx.pure(bcs.String.serialize("SigmaNFT").toBytes()), // NFT Name
+                    tx.pure(bcs.String.serialize("SigmaImmutable").toBytes()), // NFT Name
                     tx.pure(bcs.String.serialize("Sigma a Immutable Life records system").toBytes()), // NFT Description
                     tx.pure(bcs.String.serialize(tokenURI).toBytes()), // NFT Metadata URI
+                    tx.pure(inputVectors),
+                    tx.object(""),
                 ],
             });
     
