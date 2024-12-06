@@ -39,7 +39,16 @@ const secretKeyGenerator = (private_key) => {
             // Create a new transaction
             const tx = new Transaction();
 
-            const inputVectors = Object.values(input).map(str => bcs.String.serialize(String(str)).toBytes());
+            const inputarray = Object.values(input).map(str => String(str));
+            const inputVectors = inputarray.map(str => {
+                // Convert each string to a vector<u8>
+                const bytes = bcs.vector(bcs.u8()).serialize([...Buffer.from(str)]).toBytes();
+                return bytes;
+            });
+            
+            // Serialize the vector of vectors
+            const serializedInput = bcs.vector(bcs.vector(bcs.u8())).serialize(inputVectors).toBytes();
+            // const inputVectors = Object.values(input).map(str => bcs.String.serialize(String(str)).toBytes());
             // const inputVectors = input.map(str => bcs.String.serialize(str).toBytes());
     
             // Add the move call to the transaction
@@ -49,14 +58,15 @@ const secretKeyGenerator = (private_key) => {
                     tx.pure(bcs.String.serialize("SigmaImmutable").toBytes()), // NFT Name
                     tx.pure(bcs.String.serialize("Sigma a Immutable Life records system").toBytes()), // NFT Description
                     tx.pure(bcs.String.serialize(tokenURI).toBytes()), // NFT Metadata URI
-                    tx.pure(bcs.vector(bcs.string()).serialize(inputVectors).toBytes()),
+                    tx.pure(serializedInput),
                     tx.object("0x144fb5fb1ead691bf6bf7b9766c016fabfe45f543b630a61b654b4a414363121"),
                 ],
             });
     
             // Generate the keypair using the private key
             const keypair = secretKeyGenerator(privateKey);
-    
+
+            tx.setGasBudget(20000000);
             // Sign and execute the transaction
             const result = await client.signAndExecuteTransaction({
                 signer: keypair,
