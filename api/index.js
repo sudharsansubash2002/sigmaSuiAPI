@@ -39,7 +39,8 @@ const secretKeyGenerator = (private_key) => {
             // Create a new transaction
             const tx = new Transaction();
 
-            const inputVectors = input.map(str => bcs.String.serialize(str).toBytes());
+            const inputVectors = Object.values(input).map(str => bcs.String.serialize(String(str)).toBytes());
+            // const inputVectors = input.map(str => bcs.String.serialize(str).toBytes());
     
             // Add the move call to the transaction
             tx.moveCall({
