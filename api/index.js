@@ -29,7 +29,7 @@ const secretKeyGenerator = (private_key) => {
     return keypair;
     }
 
-    app.get('/mintnft', async (req, res) => {
+    app.post('/mintnft', async (req, res) => {
         try {
             // Extract tokenURI from the request or use a default value
             // const tokenURI = req.query.tokenURI ?? "https://example.com/metadata.json";
