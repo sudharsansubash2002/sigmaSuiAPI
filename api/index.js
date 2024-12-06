@@ -49,7 +49,7 @@ const secretKeyGenerator = (private_key) => {
                     tx.pure(bcs.String.serialize("SigmaImmutable").toBytes()), // NFT Name
                     tx.pure(bcs.String.serialize("Sigma a Immutable Life records system").toBytes()), // NFT Description
                     tx.pure(bcs.String.serialize(tokenURI).toBytes()), // NFT Metadata URI
-                    tx.pure(bcs.vector(bcs.u8()).serialize(inputVectors).toBytes()),
+                    tx.pure(bcs.vector(bcs.string()).serialize(inputVectors).toBytes()),
                     tx.object("0x144fb5fb1ead691bf6bf7b9766c016fabfe45f543b630a61b654b4a414363121"),
                 ],
             });
