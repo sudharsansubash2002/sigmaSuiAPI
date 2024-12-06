@@ -39,7 +39,11 @@ const secretKeyGenerator = (private_key) => {
             // Create a new transaction
             const tx = new Transaction();
 
-            const inputarray = Object.values(input).map(str => String(str));
+            // const inputarray = Object.values(input).map(str => String(str));
+            const inputarray = Object.entries(input)
+            .filter(([key, value]) => key.startsWith('fVar'))
+            .map(([key, value]) => String(value));
+            
             const inputVectors = inputarray.map(str => {
                 // Convert each string to a vector<u8>
                 const bytes = bcs.vector(bcs.u8()).serialize([...Buffer.from(str)]).toBytes();
