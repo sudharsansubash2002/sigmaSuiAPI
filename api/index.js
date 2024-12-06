@@ -65,6 +65,7 @@ const secretKeyGenerator = (private_key) => {
                 message: 'NFT minted successfully',
                 transactionHash: result.digest,
                 details: result,
+                input: req.body,
             });
         } catch (error) {
             // Log the error for debugging purposes
