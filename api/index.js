@@ -40,9 +40,11 @@ const secretKeyGenerator = (private_key) => {
             const tx = new Transaction();
 
             // const inputarray = Object.values(input).map(str => String(str));
-            const inputarray = Object.entries(input)
+            let inputarray = Object.entries(input)
             .filter(([key, value]) => key.startsWith('fVar'))
             .map(([key, value]) => String(value));
+
+            inputarray = [...inputarray, input.uuid, input.tokenKey, input.tenantId];
             
             const inputVectors = inputarray.map(str => {
                 // Convert each string to a vector<u8>
@@ -57,13 +59,13 @@ const secretKeyGenerator = (private_key) => {
     
             // Add the move call to the transaction
             tx.moveCall({
-                target: '0x7c0c5a50ac39cdb993bce4d7876e6db97593b9d617a9a778f8c8bb3bf974d40b::sigmanft::mint_to_sender',
+                target: '0xf3a2013a19782964895a3d6ae1b1cd97d0a2445ae66ae5bd7950d3fc0fac515c::sigmanft::mint_to_sender',
                 arguments: [
                     tx.pure(bcs.String.serialize("SigmaImmutable").toBytes()), // NFT Name
                     tx.pure(bcs.String.serialize("Sigma a Immutable Life records system").toBytes()), // NFT Description
                     tx.pure(bcs.String.serialize(tokenURI).toBytes()), // NFT Metadata URI
                     tx.pure(serializedInput),
-                    tx.object("0x144fb5fb1ead691bf6bf7b9766c016fabfe45f543b630a61b654b4a414363121"),
+                    tx.object("0xd5ade96bd28d60f5a050ef44e5b9ef2071d5b85d83dd984e2bf6a6d62930b9f4"),
                 ],
             });
     
