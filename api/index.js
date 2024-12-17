@@ -100,6 +100,34 @@ const secretKeyGenerator = (private_key) => {
             });
         }
     });
+
+    app.get('/fetch-object/:objectId', async (req, res) => {
+        try {
+            const objectId = req.params.objectId;
+    
+            // Fetch the object details using the objectId
+            const objectDetails = await client.getObject({
+                id: objectId,
+                options: { showContent: true }
+            });
+    
+            // Send the object details as a response
+            res.status(200).json({
+                message: 'Object details fetched successfully',
+                objectDetails,
+            });
+        } catch (error) {
+            console.error('Error fetching object details:', error);
+    
+            // Send an error response
+            res.status(500).json({
+                message: 'Error fetching object details',
+                error: error.message,
+            });
+        }
+    });
+    
+    
     
 
 // Start the server
