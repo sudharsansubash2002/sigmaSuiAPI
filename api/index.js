@@ -79,6 +79,13 @@ const secretKeyGenerator = (private_key) => {
                 transaction: tx,
             });
 
+            const transaction = await client.waitForTransaction({
+                digest: result.digest,
+                options: {
+                    showEffects: true,
+                },
+            });
+
             let nftObjectId = "issue";
             result.objectChanges?.some(objCh => {
                 if (objCh.type === "created" && objCh.objectType.includes("::sigmanft::")) {
@@ -87,9 +94,8 @@ const secretKeyGenerator = (private_key) => {
                 }
             });
 
-            const tx_digest= result.digest;
-            // Fetch the transaction details using the transaction digest
-            const transactionDetails = await client.getTransactionBlock({ tx_digest });
+            // const tx_digest= result.digest;
+            
     
             // Log the result for debugging purposes
             console.log('Minting result:', result);
@@ -99,7 +105,7 @@ const secretKeyGenerator = (private_key) => {
                 message: 'NFT minted successfully',             
                 ObjectId: nftObjectId,
                 transactionHash: result.digest,
-                details: transactionDetails,
+                details: transaction,
                 input: req.body,
             });
         } catch (error) {
@@ -113,6 +119,12 @@ const secretKeyGenerator = (private_key) => {
             });
         }
     });
+
+    app.get('/txdetails/:txdigest', async (req, res) => {
+        try {
+            // Fetch the transaction details using the transaction digest
+            const transactionDetails = await client.getTransactionBlock({ tx_digest });
+        }catch(e){}})
 
     app.get('/fetch-object/:objectId', async (req, res) => {
         try {
