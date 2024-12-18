@@ -86,7 +86,7 @@ const secretKeyGenerator = (private_key) => {
                 },
             });
 
-            let createdObjects = response.details.effects.created;
+            let createdObjects = transaction.details.effects.created;
             let nftObjectId = createdObjects[0].reference.objectId;
 
             // const tx_digest= result.digest;
