@@ -78,6 +78,14 @@ const secretKeyGenerator = (private_key) => {
                 signer: keypair,
                 transaction: tx,
             });
+
+            let nftObjectId;
+            result.objectChanges?.some(objCh => {
+                if (objCh.type === "created" && objCh.objectType.includes("::sigmanft::")) {
+                    nftObjectId = objCh.objectId;
+                    return true;
+                }
+            });
     
             // Log the result for debugging purposes
             console.log('Minting result:', result);
@@ -86,6 +94,7 @@ const secretKeyGenerator = (private_key) => {
             res.status(200).json({
                 message: 'NFT minted successfully',
                 transactionHash: result.digest,
+                nftObjectId: nftObjectId,
                 details: result,
                 input: req.body,
             });
