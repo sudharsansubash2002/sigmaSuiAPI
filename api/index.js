@@ -115,12 +115,6 @@ const secretKeyGenerator = (private_key) => {
         }
     });
 
-    app.get('/txdetails/:txdigest', async (req, res) => {
-        try {
-            // Fetch the transaction details using the transaction digest
-            const transactionDetails = await client.getTransactionBlock({ tx_digest });
-        }catch(e){}})
-
     app.get('/fetch-object/:objectId', async (req, res) => {
         try {
             const objectId = req.params.objectId;
