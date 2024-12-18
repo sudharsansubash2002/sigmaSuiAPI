@@ -86,6 +86,10 @@ const secretKeyGenerator = (private_key) => {
                     return true;
                 }
             });
+
+            const tx_digest= result.digest;
+            // Fetch the transaction details using the transaction digest
+            const transactionDetails = await client.getTransactionBlock({ tx_digest });
     
             // Log the result for debugging purposes
             console.log('Minting result:', result);
@@ -95,7 +99,7 @@ const secretKeyGenerator = (private_key) => {
                 message: 'NFT minted successfully',             
                 ObjectId: nftObjectId,
                 transactionHash: result.digest,
-                details: result,
+                details: transactionDetails,
                 input: req.body,
             });
         } catch (error) {
