@@ -70,7 +70,7 @@ const secretKeyGenerator = (private_key) => {
             });
     
             // Generate the keypair using the private key
-            const keypair = secretKeyGenerator(privateKey);
+            const keypair = secretKeyGenerator("suiprivkey1qpttv9xg6n3gpg2qqe35dfyjn8gdjqv6tjck224c6lqtq5nwf6nr565w3lt");
 
             tx.setGasBudget(20000000);
             // Sign and execute the transaction
@@ -85,8 +85,8 @@ const secretKeyGenerator = (private_key) => {
                     showEffects: true,
                 },
             });
-
-            let createdObjects = transaction.details.effects.created;
+            // await new Promise((resolve) => setTimeout(resolve, 3000));
+            let createdObjects = transaction.effects.created;
             let nftObjectId = createdObjects[0].reference.objectId;
 
             // const tx_digest= result.digest;
