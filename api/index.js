@@ -86,13 +86,8 @@ const secretKeyGenerator = (private_key) => {
                 },
             });
 
-            let nftObjectId = "issue";
-            result.objectChanges?.some(objCh => {
-                if (objCh.type === "created" && objCh.objectType.includes("::sigmanft::")) {
-                    nftObjectId = objCh.objectId;
-                    return true;
-                }
-            });
+            let createdObjects = response.details.effects.created;
+            let nftObjectId = createdObjects[0].reference.objectId;
 
             // const tx_digest= result.digest;
             
