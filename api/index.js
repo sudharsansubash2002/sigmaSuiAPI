@@ -33,7 +33,7 @@ const secretKeyGenerator = (private_key) => {
         try {
             // Extract tokenURI from the request or use a default value
             // const tokenURI = req.query.tokenURI ?? "https://example.com/metadata.json";
-            const tokenURI = req.body.docChecksum ? `https://ipfs.io/ipfs/${req.body.docChecksum}` : `https://ipfs.io/ipfs/cidId`;
+            const tokenURI = req.body.docChecksum ? `https://aggregator.walrus-testnet.walrus.space/v1/${req.body.docChecksum}` : `https://aggregator.walrus-testnet.walrus.space/v1/nohash`;
             const input = req.body;
             
             // Create a new transaction
