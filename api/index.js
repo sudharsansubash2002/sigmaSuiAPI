@@ -39,33 +39,68 @@ const secretKeyGenerator = (private_key) => {
             // Create a new transaction
             const tx = new Transaction();
 
-            // const inputarray = Object.values(input).map(str => String(str));
-            let inputarray = Object.entries(input)
-            .filter(([key, value]) => key.startsWith('fVar'))
-            .map(([key, value]) => String(value));
+                // Ensure the values are stored in the order of fVar1 to fVar11
+            const fVarKeys = [
+                "fVar1", "fVar2", "fVar3", "fVar4", "fVar5",
+                "fVar6", "fVar7", "fVar8", "fVar9", "fVar10", "fVar11"
+            ];
 
+            let inputarray = fVarKeys.map(key => String(input[key] || "")); // Default to empty string if key is missing
             inputarray = [...inputarray, input.uuid, input.tokenKey, input.tenantId];
+
+            // // const inputarray = Object.values(input).map(str => String(str));
+            // let inputarray = Object.entries(input)
+            // .filter(([key, value]) => key.startsWith('fVar'))
+            // .map(([key, value]) => String(value));
+
+            // inputarray = [...inputarray, input.uuid, input.tokenKey, input.tenantId];
             
-            const inputVectors = inputarray.map(str => {
-                // Convert each string to a vector<u8>
-                const bytes = bcs.vector(bcs.u8()).serialize([...Buffer.from(str)]).toBytes();
-                return bytes;
-            });
+            // const inputVectors = inputarray.map(str => {
+            //     // Convert each string to a vector<u8>
+            //     const bytes = bcs.vector(bcs.u8()).serialize([...Buffer.from(str)]).toBytes();
+            //     return bytes;
+            // });
+
+            // console.log(inputarray[0]);
             
             // Serialize the vector of vectors
-            const serializedInput = bcs.vector(bcs.vector(bcs.u8())).serialize(inputVectors).toBytes();
+            // const serializedInput = bcs.vector(bcs.vector(bcs.u8())).serialize(inputVectors).toBytes();
             // const inputVectors = Object.values(input).map(str => bcs.String.serialize(String(str)).toBytes());
             // const inputVectors = input.map(str => bcs.String.serialize(str).toBytes());
     
             // Add the move call to the transaction
+            // tx.moveCall({
+            //     target: '0xf3a2013a19782964895a3d6ae1b1cd97d0a2445ae66ae5bd7950d3fc0fac515c::sigmanft::mint_to_sender',
+            //     arguments: [
+            //         tx.pure(bcs.String.serialize("SigmaImmutable").toBytes()), // NFT Name
+            //         tx.pure(bcs.String.serialize("Sigma a Immutable Life records system").toBytes()), // NFT Description
+            //         tx.pure(bcs.String.serialize(tokenURI).toBytes()), // NFT Metadata URI
+            //         tx.pure(serializedInput),
+            //         tx.object("0xd5ade96bd28d60f5a050ef44e5b9ef2071d5b85d83dd984e2bf6a6d62930b9f4"),
+            //     ],
+            // });
+
             tx.moveCall({
-                target: '0xf3a2013a19782964895a3d6ae1b1cd97d0a2445ae66ae5bd7950d3fc0fac515c::sigmanft::mint_to_sender',
+                target: '0x604f7248a1454c44a2e95e363c714d715eada5b5ae41e75fa1ce343e7aee2c25::sigmanft_two::mint_to_sender',
                 arguments: [
                     tx.pure(bcs.String.serialize("SigmaImmutable").toBytes()), // NFT Name
                     tx.pure(bcs.String.serialize("Sigma a Immutable Life records system").toBytes()), // NFT Description
                     tx.pure(bcs.String.serialize(tokenURI).toBytes()), // NFT Metadata URI
-                    tx.pure(serializedInput),
-                    tx.object("0xd5ade96bd28d60f5a050ef44e5b9ef2071d5b85d83dd984e2bf6a6d62930b9f4"),
+                    tx.pure(bcs.String.serialize(inputarray[0]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[1]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[2]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[3]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[4]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[5]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[6]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[7]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[8]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[9]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[10]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[11]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[12]).toBytes()),
+                    tx.pure(bcs.String.serialize(inputarray[13]).toBytes()),
+                    tx.object("0x68cfcd880b14315a292cfc89396fa24e85da5ae16aafb3650f8a53946749f3ae"),
                 ],
             });
     
@@ -73,7 +108,7 @@ const secretKeyGenerator = (private_key) => {
             const keypair = secretKeyGenerator(privateKey);
 
             tx.setGasBudget(20000000);
-            // Sign and execute the transaction
+            // // Sign and execute the transaction
             const result = await client.signAndExecuteTransaction({
                 signer: keypair,
                 transaction: tx,
@@ -92,7 +127,7 @@ const secretKeyGenerator = (private_key) => {
             // const tx_digest= result.digest;
             
     
-            // Log the result for debugging purposes
+            // // Log the result for debugging purposes
             console.log('Minting result:', result);
     
             // Send a success response
