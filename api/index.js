@@ -3,6 +3,8 @@ const {Ed25519Keypair} = require('@mysten/sui/keypairs/ed25519');
 const {Transaction} = require('@mysten/sui/transactions');
 const { SuiClient, getFullnodeUrl } = require('@mysten/sui/client');
 const { bcs } = require('@mysten/sui/bcs');
+const cors = require("cors");
+
 
 require('dotenv').config();
 
@@ -10,6 +12,8 @@ const app = express();
 
 // Middleware to parse JSON requests
 app.use(express.json());
+
+app.use(cors({ origin: "https://sigma-sui-app.vercel.app" })); // Allow specific origin
  
 const PORT = 42101;
 // Example of accessing private key and RPC URL
